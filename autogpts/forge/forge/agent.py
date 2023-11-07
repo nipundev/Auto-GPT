@@ -1,18 +1,18 @@
-import json
-import pprint
-
 from forge.sdk import (
     Agent,
     AgentDB,
+    ForgeLogger,
     Step,
     StepRequestBody,
-    Workspace,
-    ForgeLogger,
     Task,
     TaskRequestBody,
-    PromptEngine,
-    chat_completion_request,
+    Workspace,    
+    PromptEngine,	
+    chat_completion_request,	
+    ChromaMemStore	
 )
+import json	
+import pprint
 
 LOG = ForgeLogger(__name__)
 
@@ -129,7 +129,6 @@ class ForgeAgent(Agent):
 
         self.workspace.write(task_id=task_id, path="output.txt", data=b"Washington D.C")
 
-
         await self.db.create_artifact(
             task_id=task_id,
             step_id=step.step_id,
@@ -137,9 +136,12 @@ class ForgeAgent(Agent):
             relative_path="",
             agent_created=True,
         )
-        
+
         step.output = "Washington D.C"
 
-        LOG.info(f"\t✅ Final Step completed: {step.step_id}")
+        LOG.info(f"\t✅ Final Step completed: {step.step_id}. \n" +
+                 f"Output should be placeholder text Washington D.C. You'll need to \n" +
+                 f"modify execute_step to include LLM behavior. Follow the tutorial " +
+                 f"if confused. ")
 
         return step
